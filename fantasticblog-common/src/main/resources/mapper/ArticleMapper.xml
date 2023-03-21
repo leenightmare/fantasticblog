@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cc.lijad.fantasticblog.mapper.ArticleMapper">
+
+    <resultMap id="BaseResultMap" type="cc.lijad.fantasticblog.domain.entity.Article">
+        <id property="id" column="id" jdbcType="BIGINT"/>
+        <result property="title" column="title" jdbcType="VARCHAR"/>
+        <result property="description" column="description" jdbcType="VARCHAR"/>
+        <result property="headImage" column="head_image" jdbcType="VARCHAR"/>
+        <result property="content" column="content" jdbcType="VARCHAR"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+        <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+        <result property="commentCount" column="comment_count" jdbcType="INTEGER"/>
+        <result property="visitCount" column="visit_count" jdbcType="INTEGER"/>
+        <result property="userId" column="user_id" jdbcType="BIGINT"/>
+        <result property="userNickname" column="user_nickname" jdbcType="VARCHAR"/>
+        <result property="userAvatar" column="user_avatar" jdbcType="VARCHAR"/>
+        <result property="categoryId" column="category_id" jdbcType="BIGINT"/>
+        <result property="isComment" column="is_comment" jdbcType="INTEGER"/>
+        <result property="isTop" column="is_top" jdbcType="INTEGER"/>
+        <result property="isExtra" column="is_extra" jdbcType="INTEGER"/>
+        <result property="status" column="status" jdbcType="INTEGER"/>
+        <result property="delFlag" column="del_flag" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,title,description,
+        head_image,content,create_time,
+        update_time,comment_count,visit_count,
+        user_id,user_nickname,user_avatar,
+        category_id,is_comment,is_top,
+        is_extra,status,del_flag
+    </sql>
+    <!--没有详细内容的-->
+    <sql id="Simple_Base_Column_List">
+        id,title,description,
+        head_image,create_time,
+        update_time,comment_count,visit_count,
+        user_id,user_nickname,user_avatar,
+        category_id,is_comment,is_top,
+        is_extra,status,del_flag
+    </sql>
+
+    <!--评论数修改（评论数增加）-->
+    <update id="incrCommentCount">
+        update blog_article
+        set comment_count = comment_count + #{incrCount}
+        where id = #{articleId}
+    </update>
+
+
+    <!--归档-->
+    <select id="selectArticleForTimeLine" resultMap="BaseResultMap">
+        select
+        <include refid="Simple_Base_Column_List"/>
+        from blog_article
+        where del_flag = 0
+        GROUP BY
+        id,
+        DATE_FORMAT(create_time, '%Y' )
+        ORDER BY
+        DATE_FORMAT(create_time, '%Y' )
+        desc
+    </select>
+
+    <!--分类对应数量-->
+    <select id="selectArticleForCategory" resultType="cc.lijad.fantasticblog.domain.vo.CategoryArticleVo">
+        select a.category_id as categoryId, c.name as categoryName, count(*) as articleCount
+        from blog_article a
+        join blog_category c
+        on a.category_id = c.id
+        where a.del_flag = 0
+        group by a.category_id
+    </select>
+
+    <select id="selectVisitCount" resultMap="BaseResultMap">
+        select id,visit_count from blog_article where del_flag = 0 and status = 0
+    </select>
+
+    <!--根据文章ID查标签-->
+    <select id="selectTagListByArticleId" resultType="java.lang.Long">
+        select bt.id
+        from blog_article_tag bat
+        join blog_tag bt
+        on bat.tag_id = bt.id
+        where bat.article_id = #{articleId} and bt.del_flag = 0
+    </select>
+</mapper>

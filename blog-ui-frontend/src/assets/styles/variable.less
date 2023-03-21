@@ -1,0 +1,25 @@
+// 320px 超小屏幕
+@screen-xxs: 320px;
+//480px 小屏幕
+@screen-xs: 576px;
+// 750px 中屏幕
+@screen-sm: 768px;
+// 992px 大屏幕
+@screen-md: 992px;
+// 1200px 稍大屏幕
+@screen-lg: 1200px;
+
+// 1920px 超大屏幕
+// @screen-xl: 1920px;
+
+// 划分数
+@baseCount: 24;
+
+// 以哪个屏幕为基础
+@baseScreen: @screen-lg;
+
+// 屏幕下的基础字体
+@baseFont: (@baseScreen / @baseCount);
+
+// 通过px算出rem公式
+// 100rem / @BaseFont

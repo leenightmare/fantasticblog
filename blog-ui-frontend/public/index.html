@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <!-- <meta name="viewport" content="width=device-width,initial-scale=1.0"> -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0,maximum-scale=1, user-scalable=no">
+  <link rel="icon" href="<%= BASE_URL %>favicon.ico">
+  <title>
+    <%= htmlWebpackPlugin.options.title %>
+  </title>
+  <style>
+    body::before {
+      content: "";
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      opacity: .8;
+      position: fixed;
+      z-index: -999 !important;
+      background: center/cover no-repeat;
+      /* background-image: url("http://xiongsihao.com/images/2003390.jpg"); */
+      /* background-image: url("/api/bg.jpg"); */
+      /* background-image: url("/bg16.jpg"); */
+      /* background-image: url("/bg_1.png"); */
+      /* background-image: linear-gradient(to top, #cfd9df 0%, #e2ebf0 100%); */
+    }
+    body{
+      background-color: #f8f8f8;
+    }
+  </style>
+</head>
+
+<body id="body" ref="body">
+  <noscript>
+    <strong>We're sorry but <%= htmlWebpackPlugin.options.title %> doesn't work properly without JavaScript enabled.
+        Please enable it to continue.</strong>
+  </noscript>
+  <div id="app"></div>
+</body>
+
+</html>

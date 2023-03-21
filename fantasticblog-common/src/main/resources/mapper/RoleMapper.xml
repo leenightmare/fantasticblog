@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cc.lijad.fantasticblog.mapper.RoleMapper">
+
+    <resultMap id="BaseResultMap" type="cc.lijad.fantasticblog.domain.entity.Role">
+        <id property="roleId" column="role_id" jdbcType="BIGINT"/>
+        <result property="roleName" column="role_name" jdbcType="VARCHAR"/>
+        <result property="roleKey" column="role_key" jdbcType="VARCHAR"/>
+        <result property="roleSort" column="role_sort" jdbcType="INTEGER"/>
+        <result property="status" column="status" jdbcType="CHAR"/>
+        <result property="delFlag" column="del_flag" jdbcType="CHAR"/>
+        <result property="createBy" column="create_by" jdbcType="VARCHAR"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+        <result property="updateBy" column="update_by" jdbcType="VARCHAR"/>
+        <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+        <result property="remark" column="remark" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        role_id,role_name,role_key,
+        role_sort,status,del_flag,
+        create_by,create_time,update_by,
+        update_time,remark
+    </sql>
+
+
+    <select id="selectRolesByUserId" resultType="java.lang.String">
+        select
+        r.role_key
+        from blog_role r
+        join blog_user_role ur
+        on r.role_id = ur.role_id
+        where r.del_flag = 0 and r.status = 0 and ur.user_id = #{id}
+    </select>
+    <select id="selectRoleObjByUserId" resultMap="BaseResultMap">
+        select
+        r.role_id,r.role_name,r.role_key,
+        r.role_sort,r.status,r.del_flag,
+        r.create_by,r.create_time,r.update_by,
+        r.update_time,r.remark
+        from blog_role r
+        join blog_user_role ur
+        on r.role_id = ur.role_id
+        where r.del_flag = 0 and r.status = 0 and ur.user_id = #{id}
+    </select>
+
+    <select id="checkMenuExistRole" resultType="java.lang.Integer">
+        select count(1) from blog_role_menu where menu_id = #{menuId}
+    </select>
+    <select id="checkRoleNameUnique" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from blog_role
+        where role_name=#{roleName} and del_flag = '0' limit 1
+    </select>
+    <select id="checkRoleKeyUnique" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from blog_role
+        where role_key=#{roleKey} and del_flag = '0' limit 1
+    </select>
+
+    <insert id="insertUserRoleBatch">
+        insert into blog_user_role(user_id,role_id) values
+        <foreach collection="roleIds" separator="," item="roleId">
+            (#{userId},#{roleId})
+        </foreach>
+    </insert>
+
+    <insert id="saveRoleMenu">
+        insert into blog_role_menu(role_id,menu_id) values
+        <foreach collection="menuIds" separator="," item="menuId">
+            (#{roleId},#{menuId})
+        </foreach>
+    </insert>
+
+
+    <delete id="deleteUserRoleByUserId">
+        delete from blog_user_role where user_id = #{userId}
+    </delete>
+
+
+    <delete id="deleteRoleMenuByRoleId">
+            delete from blog_role_menu where role_id = #{roleId}
+    </delete>
+
+
+</mapper>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cc.lijad.fantasticblog.mapper.BlogConfigMapper">
+
+    <resultMap id="BaseResultMap" type="cc.lijad.fantasticblog.domain.entity.BlogConfig">
+        <id property="id" column="id" jdbcType="BIGINT"/>
+        <result property="poem" column="poem" jdbcType="VARCHAR"/>
+        <result property="indexBackground" column="index_background" jdbcType="VARCHAR"/>
+        <result property="girlUrl" column="girl_url" jdbcType="VARCHAR"/>
+        <result property="aboutDescription" column="about_description" jdbcType="VARCHAR"/>
+        <result property="wechat" column="wechat" jdbcType="VARCHAR"/>
+        <result property="github" column="github" jdbcType="VARCHAR"/>
+        <result property="gitee" column="gitee" jdbcType="VARCHAR"/>
+        <result property="qq" column="qq" jdbcType="VARCHAR"/>
+        <result property="email" column="email" jdbcType="VARCHAR"/>
+        <result property="pendant" column="pendant" jdbcType="VARCHAR"/>
+        <result property="username" column="username" jdbcType="VARCHAR"/>
+        <result property="userAvatar" column="user_avatar" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,poem,index_background,
+        girl_url,about_description,wechat,
+        github,gitee,qq,
+        email,pendant,username,
+        user_avatar
+    </sql>
+</mapper>

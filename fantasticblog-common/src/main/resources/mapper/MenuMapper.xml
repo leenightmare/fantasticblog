@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cc.lijad.fantasticblog.mapper.MenuMapper">
+
+    <resultMap id="BaseResultMap" type="cc.lijad.fantasticblog.domain.entity.Menu">
+        <id property="menuId" column="menu_id" jdbcType="BIGINT"/>
+        <result property="menuName" column="menu_name" jdbcType="VARCHAR"/>
+        <result property="parentId" column="parent_id" jdbcType="BIGINT"/>
+        <result property="orderNum" column="order_num" jdbcType="INTEGER"/>
+        <result property="path" column="path" jdbcType="VARCHAR"/>
+        <result property="component" column="component" jdbcType="VARCHAR"/>
+        <result property="query" column="query" jdbcType="VARCHAR"/>
+        <result property="isFrame" column="is_frame" jdbcType="INTEGER"/>
+        <result property="isCache" column="is_cache" jdbcType="INTEGER"/>
+        <result property="menuType" column="menu_type" jdbcType="CHAR"/>
+        <result property="visible" column="visible" jdbcType="CHAR"/>
+        <result property="status" column="status" jdbcType="CHAR"/>
+        <result property="perms" column="perms" jdbcType="VARCHAR"/>
+        <result property="icon" column="icon" jdbcType="VARCHAR"/>
+        <result property="createBy" column="create_by" jdbcType="VARCHAR"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+        <result property="updateBy" column="update_by" jdbcType="VARCHAR"/>
+        <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+        <result property="remark" column="remark" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        menu_id,menu_name,parent_id,
+        order_num,path,component,
+        query,is_frame,is_cache,
+        menu_type,visible,status,
+        perms,icon,create_by,
+        create_time,update_by,update_time,
+        remark
+    </sql>
+    <select id="selectPermissionsByUserId" resultType="java.lang.String">
+        select DISTINCT m.perms
+        from blog_menu m
+        left join blog_role_menu rm
+        on m.menu_id = rm.menu_id
+        left JOIN  blog_user_role ur
+        on ur.role_id = rm.role_id
+        where m.menu_type in('C','F')
+        and m.status = '0'
+        and ur.user_id = #{id}
+
+    </select>
+
+    <select id="selectRouterByUserId" resultMap="BaseResultMap">
+        select
+            DISTINCT m.menu_id,m.menu_name,m.parent_id,
+            m.order_num,m.path,m.component,
+            m.query,m.is_frame,m.is_cache,
+            m.menu_type,m.visible,m.status,
+            m.perms,m.icon,m.create_by,
+            m.create_time,m.update_by,m.update_time,
+            m.remark
+        from blog_user_role ur
+        join blog_role_menu rm
+        on ur.role_id = rm.role_id
+        join blog_menu m
+        on rm.menu_id = m.menu_id
+        where m.menu_type in ('C','M') and  m.status = 0 and ur.user_id = #{userId}
+        order by m.order_num asc
+    </select>
+
+    <!--  菜单管理首页  -->
+    <select id="selectMenuList" resultMap="BaseResultMap">
+        select
+            DISTINCT m.menu_id,m.menu_name,m.parent_id,
+            m.order_num,m.path,m.component,
+            m.query,m.is_frame,m.is_cache,
+            m.menu_type,m.visible,m.status,
+            m.perms,m.icon,m.create_by,
+            m.create_time,m.update_by,m.update_time,
+            m.remark
+        from blog_user_role ur
+        join blog_role_menu rm
+        on ur.role_id = rm.role_id
+        join blog_menu m
+        on rm.menu_id = m.menu_id
+        where ur.user_id = #{userId}
+        order by m.order_num asc
+    </select>
+    <select id="checkMenuNameUnique" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from blog_menu
+        where menu_name=#{menuName} and parent_id = #{parentId} limit 1
+    </select>
+    <select id="hasChildByMenuId" resultType="java.lang.Integer">
+          select count(1) from blog_menu where parent_id = #{menuId}
+    </select>
+    <select id="selectMenuListByRoleId" resultMap="BaseResultMap">
+        select
+            DISTINCT m.menu_id,m.menu_name,m.parent_id,
+            m.order_num,m.path,m.component,
+            m.query,m.is_frame,m.is_cache,
+            m.menu_type,m.visible,m.status,
+            m.perms,m.icon,m.create_by,
+            m.create_time,m.update_by,m.update_time,
+            m.remark
+        from blog_role_menu brm
+        join blog_menu m
+        on brm.menu_id = m.menu_id
+        where brm.role_id = #{roleId}
+    </select>
+</mapper>

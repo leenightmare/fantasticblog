@@ -1,0 +1,62 @@
+/*@baseCount: 20;*/
+/*
+// 320px 超小屏幕
+@screen-xxs: 320px;
+//480px 小屏幕
+@screen-xs: 576px;
+// 750px 中屏幕
+@screen-sm: 768px;
+// 992px 大屏幕
+@screen-md: 992px;
+// 1200px 稍大屏幕
+@screen-lg: 1200px;
+// 1920px 超大屏幕
+@screen-ml: 1920px;
+*/
+/* 超小屏幕（手机，320px - 576px） */
+@media screen and (min-width: 320px) {
+  html {
+    font-size: 20px;
+  }
+  .container {
+    max-width: 100%;
+  }
+}
+/* 中小屏幕（手机，576px - 768px） */
+@media screen and (min-width: 576px) {
+  html {
+    font-size: 25px;
+  }
+  .container {
+    max-width: 100%;
+  }
+}
+/* 小屏幕（平板， 768px - 992px ） */
+@media screen and (min-width: 768px) {
+  html {
+    font-size: 32px;
+  }
+  .container {
+    max-width: 720px;
+  }
+}
+/* 中等屏幕（桌面显示器， 992px - 1200px） */
+@media screen and (min-width: 992px) {
+  html {
+    font-size: 41.33333333px;
+  }
+  .container {
+    max-width: 950px;
+    margin: 0 auto;
+  }
+}
+/* 大屏幕（大桌面显示器, 1200px - 1920px） */
+@media screen and (min-width: 1200px) {
+  html {
+    font-size: 50px;
+  }
+  .container {
+    max-width: 1050px;
+    margin: 0 auto;
+  }
+}
