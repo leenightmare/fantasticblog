@@ -7,6 +7,7 @@
     <groupId>cc.lijad</groupId>
     <artifactId>fantasticblog</artifactId>
     <version>1.0.0</version>
+
     <modules>
         <module>fantasticblog-common</module>
         <module>fantasticblog-frontend</module>
